@@ -1,4 +1,4 @@
-# nofar and hadar
+
 # fakeLook server starter
 ##### this is a server starter aimed to help you to start your server development, note that the code here is simply a suggestion and after cloning you can change the implemntetion or write yourself all together
 
