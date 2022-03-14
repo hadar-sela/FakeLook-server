@@ -18,10 +18,12 @@ namespace fakeLook_starter.Controllers
         {
             _repository = new UserRepository(context);
         }
+
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<User> Get()
         {
+
             return _repository.GetAll();
         }
 
@@ -29,6 +31,7 @@ namespace fakeLook_starter.Controllers
         [HttpGet("{id}")]
         public User Get(int id)
         {
+
             return _repository.GetById(id);
         }
 

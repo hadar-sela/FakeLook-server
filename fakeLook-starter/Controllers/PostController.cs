@@ -10,6 +10,7 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class PostController : ControllerBase
     {
         private readonly PostRepository _repository;
@@ -18,10 +19,12 @@ namespace fakeLook_starter.Controllers
         {
             _repository = new PostRepository(context);
         }
+
         // GET: api/<PostsController>
         [HttpGet]
         public IEnumerable<Post> Get()
         {
+
             return _repository.GetAll();
         }
 
