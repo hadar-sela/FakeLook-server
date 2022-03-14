@@ -13,8 +13,8 @@ namespace fakeLook_starter.Controllers
 
     public class PostController : ControllerBase
     {
-
         private readonly PostRepository _repository;
+
         public PostController(DataContext context)
         {
             _repository = new PostRepository(context);
@@ -24,7 +24,7 @@ namespace fakeLook_starter.Controllers
         [HttpGet]
         public IEnumerable<Post> Get()
         {
-            //return new string[] { "value1", "value2" };
+
             return _repository.GetAll();
         }
 

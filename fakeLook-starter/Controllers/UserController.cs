@@ -13,17 +13,17 @@ namespace fakeLook_starter.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _repository;
+
         public UserController(DataContext context)
         {
             _repository = new UserRepository(context);
         }
 
-
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            //return new string[] { "value1", "value2" };
+
             return _repository.GetAll();
         }
 
@@ -31,7 +31,7 @@ namespace fakeLook_starter.Controllers
         [HttpGet("{id}")]
         public User Get(int id)
         {
-            //return "value";
+
             return _repository.GetById(id);
         }
 
@@ -53,6 +53,7 @@ namespace fakeLook_starter.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }

@@ -17,6 +17,7 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<User> Add(User item)
         {
+            item.Password = item.Password.GetHashCode().ToString();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
@@ -33,7 +34,6 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<User> GetAll()
         {
-            //throw new NotImplementedException();
             return _context.Users.ToList();
         }
 
@@ -44,7 +44,6 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<User> GetByPredicate(Func<User, bool> predicate)
         {
-            //throw new NotImplementedException();
             return _context.Users.Where(predicate).ToList();
 
         }
