@@ -17,7 +17,6 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<User> Add(User item)
         {
-            //throw new NotImplementedException();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
