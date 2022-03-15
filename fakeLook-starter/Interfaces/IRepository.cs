@@ -16,7 +16,7 @@ namespace fakeLook_starter.Interfaces
     }
     public interface IUserRepository : IRepository<User>
     {
-
+        public User GetByUsername(string username);
     }
     public interface IPostRepository : IRepository<Post>
     {
