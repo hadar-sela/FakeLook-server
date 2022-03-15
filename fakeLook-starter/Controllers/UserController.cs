@@ -35,11 +35,11 @@ namespace fakeLook_starter.Controllers
             return _repository.GetById(id);
         }
 
-        [HttpGet]
-        [Route("GetByUsername/{username}")]
-        public User GetByUsername(string username)
+        [HttpPost]
+        [Route("Login")]
+        public User Login(User user)
         {
-            return _repository.GetByUsername(username);
+            return _repository.GetByUser(user);
         }
 
         // POST api/<UsersController>
