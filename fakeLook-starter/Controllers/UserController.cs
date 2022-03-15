@@ -1,5 +1,6 @@
 ﻿using fakeLook_dal.Data;
 using fakeLook_models.Models;
+using fakeLook_starter.Interfaces;
 using fakeLook_starter.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace fakeLook_starter.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _repository;
+        private ITokenService _tokenService { get; }
 
-        public UserController(DataContext context)
+        public UserController(DataContext context, ITokenService tokenService)
         {
             _repository = new UserRepository(context);
+            _tokenService = tokenService;
         }
 
         // GET: api/<UsersController>
@@ -37,16 +40,21 @@ namespace fakeLook_starter.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public User Login(User user)
+        public IActionResult Login([FromBody] User user)
         {
-            return _repository.GetByUser(user);
+            var dbUser = _repository.GetByUser(user);
+            if (dbUser == null) return Problem("user not in system");
+            var token = _tokenService.CreateToken(dbUser);
+            return Ok(new { token });
         }
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] User value)
+        public IActionResult Post([FromBody] User value)
         {
-            _ = _repository.Add(value);
+            var dbUser = _repository.Register(value);
+            var token = _tokenService.CreateToken(dbUser);
+            return Ok(new { token });
         }
 
         // PUT api/<UsersController>/5
