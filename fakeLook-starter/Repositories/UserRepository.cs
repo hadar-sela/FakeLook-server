@@ -52,7 +52,11 @@ namespace fakeLook_starter.Repositories
         public User GetByUser(User user)
         {
             //hash
-            return _context.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).SingleOrDefault();
+            if (user != null)
+            {
+                return _context.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).SingleOrDefault();
+            }
+            return null;
             //return _context.Users.SingleOrDefault(p => p.UserName == user.UserName && p.Password==user.Password );
         }
 
