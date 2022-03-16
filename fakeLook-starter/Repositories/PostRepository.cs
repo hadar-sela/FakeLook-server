@@ -23,11 +23,31 @@ namespace fakeLook_starter.Repositories
             return res.Entity;
         }
 
+        public async Task<Post> Delete(int id)
+        {
+            var post = _context.Posts.SingleOrDefault(p => p.Id == id);
+            if (post == null)
+                return null;
+            _context.Posts.Remove(post);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                int a = 1;
+            }
+            
+            return post;
+        }
+
         public async Task<Post> Edit(Post item)
         {
-            var res = _context.Posts.Update(item);
+            var post = _context.Posts.FirstOrDefault(p => item.Id == p.Id);
+            if (post == null) return null;
+            _context.Entry<Post>(post).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
-            return res.Entity;
+            return post;
         }
 
         public ICollection<Post> GetAll()
@@ -44,5 +64,6 @@ namespace fakeLook_starter.Repositories
         {
             return _context.Posts.Where(predicate).ToList();
         }
+
     }
 }

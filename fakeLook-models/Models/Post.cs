@@ -8,7 +8,6 @@ namespace fakeLook_models.Models
 {
     public class Post
     {
-
         public int Id { get; set; }
         public string Description { get; set; }
         public string ImageSorce { get; set; }
