@@ -45,7 +45,7 @@ namespace fakeLook_starter.Controllers
             var dbUser = _repository.GetByUser(user);
             if (dbUser == null) return Problem("user not in system");
             var token = _tokenService.CreateToken(dbUser);
-            return Ok(new { token });
+            return Ok(new { token, dbUser.Id, dbUser.UserName });
         }
 
         // POST api/<UsersController>
@@ -54,7 +54,7 @@ namespace fakeLook_starter.Controllers
         {
             var dbUser = _repository.Register(value);
             var token = _tokenService.CreateToken(dbUser);
-            return Ok(new { token });
+            return Ok(new { token,dbUser.Id,dbUser.UserName});
         }
 
         // PUT api/<UsersController>/5
