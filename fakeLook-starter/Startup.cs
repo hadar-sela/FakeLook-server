@@ -26,6 +26,7 @@ namespace fakeLook_starter
         private readonly string _MyAllowSpecificOrigin = "myAlloworigin";
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
         }
 
