@@ -44,7 +44,7 @@ namespace fakeLook_starter.Repositories
         public User GetByUser(User user)
         {
             //hash
-            return _context.Users.SingleOrDefault(p => p.UserName == user.UserName && p.Password==user.Password );
+            return _context.Users.Where(u => u.UserName == user.UserName && u.Password==user.Password ).SingleOrDefault();
         }
 
         public ICollection<User> GetByPredicate(Func<User, bool> predicate)
