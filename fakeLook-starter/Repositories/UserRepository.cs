@@ -17,25 +17,22 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<User> Add(User item)
         {
-            //check if exist
-            //item.Password = item.Password.GetHashCode().ToString();
+            item.Password = item.Password.GetHashCode().ToString();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
         }
 
-        public  User Register (User user)
-        {
-             _context.Users.Add(user);
-             _context.SaveChangesAsync();
-              return user;
-        }
 
         public async Task<User> Edit(User item)
         {
             var user = _context.Users.FirstOrDefault(u => item.Id == u.Id);
             if (user == null) return null;
+            //await _context.SaveChangesAsync();
+            //return user;
+            //var res = _context.Users.Update(item);
             _context.Entry<User>(user).CurrentValues.SetValues(item);
+            
             await _context.SaveChangesAsync();
             return user;
         }
