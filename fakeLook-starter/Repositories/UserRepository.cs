@@ -17,10 +17,18 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<User> Add(User item)
         {
+            //check if exist
             //item.Password = item.Password.GetHashCode().ToString();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
+        }
+
+        public  User Register (User user)
+        {
+             _context.Users.Add(user);
+             _context.SaveChangesAsync();
+              return user;
         }
 
         public async Task<User> Edit(User item)
@@ -44,7 +52,12 @@ namespace fakeLook_starter.Repositories
         public User GetByUser(User user)
         {
             //hash
-            return _context.Users.Where(u => u.UserName == user.UserName && u.Password==user.Password ).SingleOrDefault();
+            if (user != null)
+            {
+                return _context.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).SingleOrDefault();
+            }
+            return null;
+            //return _context.Users.SingleOrDefault(p => p.UserName == user.UserName && p.Password==user.Password );
         }
 
         public ICollection<User> GetByPredicate(Func<User, bool> predicate)
