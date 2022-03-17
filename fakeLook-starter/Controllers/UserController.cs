@@ -1,9 +1,12 @@
 ﻿using fakeLook_dal.Data;
 using fakeLook_models.Models;
+using fakeLook_starter.Filters;
 using fakeLook_starter.Interfaces;
 using fakeLook_starter.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -69,20 +72,25 @@ namespace fakeLook_starter.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public void Put(int id, [FromBody] User value)
         {
             if (value == null)
             {
                 return;
             }
+            // If the client tries to change the username to used username it is
+            // not possible to change user's attributes any more
             _ = _repository.Edit(value);
         }
 
+
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Authorize]
+        public async Task Delete(int id)
         {
-
+            await _repository.Delete(id);
         }
     }
 }
