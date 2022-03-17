@@ -29,15 +29,7 @@ namespace fakeLook_starter.Repositories
             if (post == null)
                 return null;
             _context.Posts.Remove(post);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                int a = 1;
-            }
-            
+            await _context.SaveChangesAsync();            
             return post;
         }
 

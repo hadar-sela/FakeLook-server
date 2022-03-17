@@ -17,24 +17,24 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<User> Add(User item)
         {
-            item.Password = item.Password.GetHashCode().ToString();
+            //item.Password = item.Password.GetHashCode().ToString();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
         }
 
-
         public async Task<User> Edit(User item)
         {
             var user = _context.Users.FirstOrDefault(u => item.Id == u.Id);
             if (user == null) return null;
+            _context.Entry<User>(user).CurrentValues.SetValues(item);
+           // _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+
             //await _context.SaveChangesAsync();
             //return user;
             //var res = _context.Users.Update(item);
-            _context.Entry<User>(user).CurrentValues.SetValues(item);
-            
-            await _context.SaveChangesAsync();
-            return user;
         }
 
         public ICollection<User> GetAll()
@@ -48,20 +48,26 @@ namespace fakeLook_starter.Repositories
         }
         public User GetByUser(User user)
         {
-            //hash
             if (user != null)
             {
                 return _context.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).SingleOrDefault();
             }
             return null;
-            //return _context.Users.SingleOrDefault(p => p.UserName == user.UserName && p.Password==user.Password );
         }
 
         public ICollection<User> GetByPredicate(Func<User, bool> predicate)
         {
             return _context.Users.Where(predicate).ToList();
-
         }
 
+        public async Task<User> Delete(int id)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Id == id);
+            if (user == null)
+                return null;
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }
