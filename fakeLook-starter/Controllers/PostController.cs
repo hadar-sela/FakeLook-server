@@ -1,5 +1,6 @@
 ﻿using fakeLook_dal.Data;
 using fakeLook_models.Models;
+using fakeLook_starter.Interfaces;
 using fakeLook_starter.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,11 +15,11 @@ namespace fakeLook_starter.Controllers
 
     public class PostController : ControllerBase
     {
-        private readonly PostRepository _repository;
+        private readonly IPostRepository _repository;
 
-        public PostController(DataContext context)
+        public PostController(IPostRepository repository)
         {
-            _repository = new PostRepository(context);
+            _repository = repository;
         }
 
         // GET: api/<PostsController>
