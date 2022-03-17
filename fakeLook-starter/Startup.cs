@@ -63,6 +63,8 @@ namespace fakeLook_starter
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             #endregion
             #region Setting cors policy
             services.AddCors(options =>
