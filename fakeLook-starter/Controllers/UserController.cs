@@ -16,12 +16,12 @@ namespace fakeLook_starter.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserRepository _repository;
+        private readonly IUserRepository _repository;
         private ITokenService _tokenService { get; }
 
-        public UserController(DataContext context, ITokenService tokenService)
+        public UserController(IUserRepository repository, ITokenService tokenService)
         {
-            _repository = new UserRepository(context);
+            _repository = repository;
             _tokenService = tokenService;
         }
 
