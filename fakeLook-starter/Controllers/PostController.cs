@@ -1,5 +1,10 @@
 
 ﻿using fakeLook_models.Models;
+<<<<<<< HEAD
+=======
+using fakeLook_starter.Interfaces;
+﻿using fakeLook_dal.Data;
+>>>>>>> 37a7d907c5fdcb171e2bffa8230672ab057f7872
 using fakeLook_starter.Filters;
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -48,15 +53,12 @@ namespace fakeLook_starter.Controllers
         [Authorize]
         public void Post([FromBody] Post value)
         {
-            var random = new Random();
             Request.RouteValues.TryGetValue("user", out var obj);
             var user = obj as User;
             if(user!=null)
             value.UserId = user.Id;
             value.Date = DateTime.Now;
-            value.X_Position = random.NextDouble() * 50;
-            value.Y_Position = random.NextDouble() * 50;
-            value.Z_Position = random.NextDouble() * 50;
+  
 
             _ = _repository.Add(value);
         }

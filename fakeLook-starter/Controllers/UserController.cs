@@ -47,7 +47,7 @@ namespace fakeLook_starter.Controllers
             if (user == null) 
                 return Problem("null");
             var dbUser = _repository.GetByUser(user);
-            if (dbUser == null) return Problem("Incorrect username or password");
+            if (dbUser == null) return Problem("Incorrect");
             var token = _tokenService.CreateToken(dbUser);
             return Ok(new { token, dbUser.Id, dbUser.UserName });
         }
