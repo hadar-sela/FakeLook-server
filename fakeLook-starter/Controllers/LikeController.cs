@@ -2,7 +2,6 @@
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,47 +9,45 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class PostController : ControllerBase
+    public class LikeController : ControllerBase
     {
-        private readonly IPostRepository _repository;
-
-        public PostController(IPostRepository repository)
+        private readonly ILikeRepository _repository;
+        public LikeController(ILikeRepository repository)
         {
             _repository = repository;
         }
 
-        // GET: api/<PostsController>
+        // GET: api/<LikeController>
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public IEnumerable<Like> Get()
         {
             return _repository.GetAll();
         }
 
-        // GET api/<PostsController>/5
+        // GET api/<LikeController>/5
         [HttpGet("{id}")]
-        public Post Get(int id)
+        public Like Get(int id)
         {
             return _repository.GetById(id);
         }
 
-        // POST api/<PostsController>
+        // POST api/<LikeController>
         [HttpPost]
-        public void Post([FromBody] Post value)
+        public void Post([FromBody] Like value)
         {
             _ = _repository.Add(value);
         }
 
-        // PUT api/<PostsController>/5
+        // PUT api/<LikeController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Post value)
+        public void Put(int id, [FromBody] Like value)
         {
             _ = _repository.Edit(value);
         }
 
-        // DELETE api/<PostsController>/5
+        // DELETE api/<LikeController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async void Delete(int id)
         {
             await _repository.Delete(id);
         }

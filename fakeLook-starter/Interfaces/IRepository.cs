@@ -23,4 +23,24 @@ namespace fakeLook_starter.Interfaces
     {
 
     }
+    public interface ILikeRepository: IRepository<Like>
+    {
+
+    }
+    public interface ICommentRepository: IRepository<Comment>
+    {
+
+    }
+    public interface ITagRepository: IRepository<Tag>
+    {
+
+    }
+    public interface IUserTaggedCommentRepository: IRepository<UserTaggedComment>
+    {
+
+    }
+    public interface IUserTaggedPostRepository: IRepository<UserTaggedPost>
+    {
+
+    }
 }
