@@ -51,15 +51,12 @@ namespace fakeLook_starter.Controllers
         [Authorize]
         public void Post([FromBody] Post value)
         {
-            var random = new Random();
             Request.RouteValues.TryGetValue("user", out var obj);
             var user = obj as User;
             if(user!=null)
             value.UserId = user.Id;
             value.Date = DateTime.Now;
-            value.X_Position = random.NextDouble() * 50;
-            value.Y_Position = random.NextDouble() * 50;
-            value.Z_Position = random.NextDouble() * 50;
+  
 
             _ = _repository.Add(value);
         }
