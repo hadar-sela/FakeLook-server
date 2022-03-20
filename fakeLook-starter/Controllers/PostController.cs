@@ -1,6 +1,10 @@
+
 ﻿using fakeLook_models.Models;
+using fakeLook_starter.Filters;
 using fakeLook_starter.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,9 +26,13 @@ namespace fakeLook_starter.Controllers
 
         // GET: api/<PostsController>
         [HttpGet]
+        [TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> Get()
         {
-            return _repository.GetAll();
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            var p = _repository.GetAll();
+            return p;
         }
 
         // GET api/<PostsController>/5
@@ -36,8 +44,20 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
+        [TypeFilter(typeof(GetUserActionFilter))]
+        [Authorize]
         public void Post([FromBody] Post value)
         {
+            var random = new Random();
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            if(user!=null)
+            value.UserId = user.Id;
+            value.Date = DateTime.Now;
+            value.X_Position = random.NextDouble() * 50;
+            value.Y_Position = random.NextDouble() * 50;
+            value.Z_Position = random.NextDouble() * 50;
+
             _ = _repository.Add(value);
         }
 
