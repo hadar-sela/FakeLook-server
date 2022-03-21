@@ -35,9 +35,12 @@ namespace fakeLook_starter.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(GetUserActionFilter))]
         public User Get(int id)
         {
-            return _repository.GetById(id);
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            return _repository.GetById(user.Id);
         }
 
         [HttpPost]
@@ -71,10 +74,13 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        [Authorize]
-        public void Put(int id, [FromBody] User value)
+        [HttpPut]
+        [TypeFilter(typeof(GetUserActionFilter))]
+        public void Put([FromBody] User value)
         {
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            value.Id = user.Id;
             if (value == null)
             {
                 return;

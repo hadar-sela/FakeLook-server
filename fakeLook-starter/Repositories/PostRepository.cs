@@ -57,6 +57,7 @@ namespace fakeLook_starter.Repositories
                 .ThenInclude(l => l.User)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.User)
+                .Include(t => t.UserTaggedPost)
                 .Select(DtoLogic).ToList();
         }
 
@@ -75,6 +76,11 @@ namespace fakeLook_starter.Repositories
                 var DtoLike = _converter.DtoLike(l);
                 DtoLike.User = _converter.DtoUser(l.User);
                 return DtoLike;
+            }).ToList();
+            dtoPost.UserTaggedPost = p.UserTaggedPost.Select(utp =>
+            {
+                var DtoUserTaggedPost = _converter.DtoUserTaggedPost(utp);
+                return DtoUserTaggedPost;
             }).ToList();
             return dtoPost;
         }

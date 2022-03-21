@@ -3,6 +3,7 @@ using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
@@ -18,9 +19,11 @@ namespace fakeLook_starter.Repositories
             _converter = converter;
         }
 
-        public Task<Comment> Add(Comment item)
+        public async Task<Comment> Add(Comment item)
         {
-            throw new NotImplementedException();
+            var res = _context.Comments.Add(item);
+            await _context.SaveChangesAsync();
+            return res.Entity;
         }
 
         public Task<Comment> Delete(int id)
@@ -35,7 +38,7 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Comment> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Comments.ToList();
         }
 
         public Comment GetById(int id)
