@@ -55,6 +55,18 @@ namespace fakeLook_starter.Controllers
             return Ok(new { token, dbUser.Id, dbUser.UserName });
         }
 
+        [HttpPost]
+        [Route("forgotpassword")]
+        public IActionResult forgotpassword([FromBody] User user)
+        {
+            if (user == null)
+                return Problem("null");
+            var dbUser = _repository.GetByUserBirth(user);
+            if (dbUser == null) return Problem("Incorrect");
+            return Ok(new {dbUser.Password });
+        }
+
+
         // POST api/<UsersController>
         [HttpPost]
         public IActionResult Post([FromBody] User value)
