@@ -46,6 +46,15 @@ namespace fakeLook_starter.Repositories
         {
             return _context.Users.SingleOrDefault(p => p.Id == id);
         }
+    
+        public User GetByUserBirth(User user)
+        {
+            if (user != null)
+            {
+                return _context.Users.Where(u => u.UserName == user.UserName && u.BirthDate == user.BirthDate).SingleOrDefault();
+            }
+            return null;
+        }
         public User GetByUser(User user)
         {
             if (user != null)

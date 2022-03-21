@@ -8,6 +8,7 @@ namespace fakeLook_models.Models
 {
     public class Like
     {
+
         public int Id { get; set; }
         public bool IsActive { get; set; }
 
