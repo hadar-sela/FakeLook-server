@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using fakeLook_models.Models;
+using fakeLook_starter.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,11 +11,18 @@ namespace fakeLook_starter.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
+        private readonly ITagRepository _repository;
+
+        public TagController(ITagRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/<TagController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Tag> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _repository.GetAll();
         }
 
         // GET api/<TagController>/5
@@ -25,8 +34,9 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<TagController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Tag Post([FromBody] Tag value)
         {
+            return _repository.Add(value).Result;
         }
 
         // PUT api/<TagController>/5

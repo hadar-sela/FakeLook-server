@@ -3,6 +3,7 @@ using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
@@ -18,9 +19,37 @@ namespace fakeLook_starter.Repositories
             _converter = converter;
         }
 
-        public Task<Tag> Add(Tag item)
+        public async Task<Tag> Add(Tag item)
         {
-            throw new NotImplementedException();
+            var res = GetByContent(item.Content);
+            if (res == null)
+            {
+                res = _context.Tags.Add(item).Entity;
+                await _context.SaveChangesAsync();
+            }
+            return res;
+            //var res = _context.Tags.Add(item);
+            //await _context.SaveChangesAsync();
+            //return res.Entity;
+        }
+
+        private Tag GetByContent(string content)
+        {
+
+            if(content == null)
+                return null;
+            try
+            {
+
+                var res = _context.Tags.Where(t => content == t.Content).FirstOrDefault();
+                return res;
+            }
+            catch (Exception ex)
+            {
+
+                var x = 3;
+            }
+            return null;
         }
 
         public Task<Tag> Delete(int id)
@@ -35,7 +64,7 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Tag> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Tags.ToList();
         }
 
         public Tag GetById(int id)
