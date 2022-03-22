@@ -33,9 +33,9 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<LikeController>
         [HttpPost]
-        public void Post([FromBody] Like value)
+        public Like Post([FromBody] Like value)
         {
-            _ = _repository.Add(value);
+            return _repository.Add(value).Result;
         }
 
         // PUT api/<LikeController>/5
