@@ -2,7 +2,6 @@
 ﻿using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
 using fakeLook_starter.Filters;
-using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,11 +26,11 @@ namespace fakeLook_starter.Controllers
 
         // GET: api/<PostsController>
         [HttpGet]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        //[TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> Get()
         {
-            Request.RouteValues.TryGetValue("user", out var obj);
-            var user = obj as User;
+            //Request.RouteValues.TryGetValue("user", out var obj);
+            //var user = obj as User;
             var p = _repository.GetAll();
             return p;
         }

@@ -21,19 +21,43 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Like> Add(Like item)
         {
-            var res = _context.Likes.Add(item);
-            await _context.SaveChangesAsync();
-            return _converter.DtoLike(res.Entity);
+            if (LikeExist(item))
+            {
+                var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
+                if (like.IsActive)
+                {
+                    return await Deletelike(like);
+                }
+                else
+                {
+                    like.IsActive = true;
+                    _context.SaveChanges();
+                    return like;
+                }
+            }
+            else
+            {
+                item.IsActive = true;
+                var addedlike = _context.Add(item);
+                _context.SaveChanges();
+                return addedlike.Entity;
+            }
         }
 
-        public async Task<Like> Delete(int id)
+        private bool LikeExist(Like item)
         {
-            var like = _context.Likes.SingleOrDefault(l => l.Id == id);
-            if (like == null)
-                return null;
-            _context.Likes.Remove(like);
-            await _context.SaveChangesAsync();
-            return _converter.DtoLike(like);
+            var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
+            return like != null;
+        }
+
+        public async Task<Like> Deletelike(Like like)
+        {
+            var likeDb = like;
+            likeDb.IsActive = false;
+            _context.Entry<Like>(like).CurrentValues.SetValues(likeDb);
+            _context.SaveChanges();
+            return like;
+
         }
 
         public Task<Like> Edit(Like item)
@@ -52,6 +76,11 @@ namespace fakeLook_starter.Repositories
         }
 
         public ICollection<Like> GetByPredicate(Func<Like, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Like> Delete(int id)
         {
             throw new NotImplementedException();
         }

@@ -109,6 +109,7 @@ namespace fakeLook_starter.Repositories
                 var dtoTag = _converter.DtoTag(c);
                 return dtoTag;
             }).ToArray();
+
             return dtoPost;
         }
 

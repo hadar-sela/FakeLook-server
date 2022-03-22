@@ -35,9 +35,12 @@ namespace fakeLook_starter.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(GetUserActionFilter))]
         public User Get(int id)
         {
-            return _repository.GetById(id);
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            return _repository.GetById(user.Id);
         }
 
         [HttpPost]
@@ -51,6 +54,18 @@ namespace fakeLook_starter.Controllers
             var token = _tokenService.CreateToken(dbUser);
             return Ok(new { token, dbUser.Id, dbUser.UserName });
         }
+
+        [HttpPost]
+        [Route("forgotpassword")]
+        public IActionResult forgotpassword([FromBody] User user)
+        {
+            if (user == null)
+                return Problem("null");
+            var dbUser = _repository.GetByUserBirth(user);
+            if (dbUser == null) return Problem("Incorrect");
+            return Ok(new {dbUser.Password });
+        }
+
 
         // POST api/<UsersController>
         [HttpPost]
@@ -71,10 +86,13 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        [Authorize]
-        public void Put(int id, [FromBody] User value)
+        [HttpPut]
+        [TypeFilter(typeof(GetUserActionFilter))]
+        public void Put([FromBody] User value)
         {
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
+            value.Id = user.Id;
             if (value == null)
             {
                 return;
