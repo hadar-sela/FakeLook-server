@@ -1,10 +1,6 @@
 
 ﻿using fakeLook_models.Models;
-<<<<<<< HEAD
-=======
 using fakeLook_starter.Interfaces;
-﻿using fakeLook_dal.Data;
->>>>>>> 37a7d907c5fdcb171e2bffa8230672ab057f7872
 using fakeLook_starter.Filters;
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -50,17 +46,17 @@ namespace fakeLook_starter.Controllers
         // POST api/<PostsController>
         [HttpPost]
         [TypeFilter(typeof(GetUserActionFilter))]
-        [Authorize]
-        public void Post([FromBody] Post value)
+        //[Authorize]
+        public Post Post( Post value)
         {
             Request.RouteValues.TryGetValue("user", out var obj);
             var user = obj as User;
-            if(user!=null)
-            value.UserId = user.Id;
+            if (user != null)
+                value.UserId = user.Id;
             value.Date = DateTime.Now;
   
 
-            _ = _repository.Add(value);
+            return _repository.Add(value).Result;
         }
 
         // PUT api/<PostsController>/5

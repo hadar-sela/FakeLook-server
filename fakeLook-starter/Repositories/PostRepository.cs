@@ -13,20 +13,30 @@ namespace fakeLook_starter.Repositories
     {
         readonly private DataContext _context;
         private readonly IDtoConverter _converter;
+        private readonly ITagRepository _tagRepository;
 
-        public PostRepository(DataContext context, IDtoConverter converter)
+        public PostRepository(DataContext context, IDtoConverter converter, ITagRepository tagRepository)
         {
             _context = context;
             _converter = converter;
+            _tagRepository = tagRepository;
         }
 
         public async Task<Post> Add(Post item)
         {
+            ICollection<Tag> tags = new List<Tag>();
+            if(item.Tags != null)
+            foreach (Tag tag in item.Tags)
+            {
+                tags.Add(_tagRepository.Add(tag).Result);
+            }
+            item.Tags = tags;
             var res = _context.Posts.Add(item);
             await _context.SaveChangesAsync();
             //return res.Entity;
             return _converter.DtoPost(res.Entity);
         }
+
 
         public async Task<Post> Delete(int id)
         {
@@ -51,13 +61,24 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Post> GetAll()
         {
-            return _context.Posts
-                .Include(p => p.User)
-                .Include(p => p.Likes)
-                .ThenInclude(l => l.User)
-                .Include(p => p.Comments)
-                .ThenInclude(c => c.User)
-                .Select(DtoLogic).ToList();
+            try
+            {
+
+                return _context.Posts
+                    .Include(p => p.User)
+                    .Include(p => p.Likes)
+                    .ThenInclude(l => l.User)
+                    .Include(p => p.Comments)
+                    .ThenInclude(c => c.User)
+                    .Include(t => t.UserTaggedPost)
+                    .Include(t => t.Tags)
+                    .Select(DtoLogic).ToList();
+            }
+            catch (Exception ex)
+            {
+                var x = 3;
+                return new List<Post>();
+            }
         }
 
         private Post DtoLogic(Post p)
@@ -76,6 +97,18 @@ namespace fakeLook_starter.Repositories
                 DtoLike.User = _converter.DtoUser(l.User);
                 return DtoLike;
             }).ToList();
+            dtoPost.UserTaggedPost = p.UserTaggedPost.Select(utp =>
+            {
+                var DtoUserTaggedPost = _converter.DtoUserTaggedPost(utp);
+                return DtoUserTaggedPost;
+            }).ToList();
+
+            //dtoPost.Tags = p.Tags.ToList();
+            dtoPost.Tags = p.Tags.Select(c =>
+            {
+                var dtoTag = _converter.DtoTag(c);
+                return dtoTag;
+            }).ToArray();
             return dtoPost;
         }
 
@@ -87,6 +120,8 @@ namespace fakeLook_starter.Repositories
                 .ThenInclude(l => l.User)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.User)
+                .Include(t => t.UserTaggedPost)
+                .Include(t => t.Tags)
                 .SingleOrDefault(p => p.Id == id));
         }
 
