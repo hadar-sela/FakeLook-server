@@ -22,7 +22,7 @@ namespace fakeLook_starter.Interfaces
     }
     public interface IPostRepository : IRepository<Post>
     {
-
+        ICollection<Post> GetByFilters(Filter filtersList);
     }
     public interface ILikeRepository: IRepository<Like>
     {

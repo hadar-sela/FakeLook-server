@@ -24,6 +24,18 @@ namespace fakeLook_starter.Controllers
             _repository = repository;
         }
 
+        [HttpPost]
+        [Route("GetAll")]
+        public IEnumerable<Post> GetAll(Filter filtersList)
+        {
+            if (filtersList == null)
+            {
+                return _repository.GetAll();
+            }
+
+            return _repository.GetByFilters(filtersList);
+        }
+
         // GET: api/<PostsController>
         [HttpGet]
         //[TypeFilter(typeof(GetUserActionFilter))]
@@ -31,8 +43,8 @@ namespace fakeLook_starter.Controllers
         {
             //Request.RouteValues.TryGetValue("user", out var obj);
             //var user = obj as User;
-            var p = _repository.GetAll();
-            return p;
+
+            return _repository.GetAll();
         }
 
         // GET api/<PostsController>/5
