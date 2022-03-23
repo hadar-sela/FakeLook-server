@@ -61,26 +61,71 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Post> GetAll()
         {
-            try
-            {
-
-                return _context.Posts
-                    .Include(p => p.User)
-                    .Include(p => p.Likes)
-                    .ThenInclude(l => l.User)
-                    .Include(p => p.Comments)
-                    .ThenInclude(c => c.User)
-                    .Include(t => t.UserTaggedPost)
-                    .Include(t => t.Tags)
-                    .Select(DtoLogic).ToList();
-            }
-            catch (Exception ex)
-            {
-                var x = 3;
-                return new List<Post>();
-            }
+            return _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .ThenInclude(l => l.User)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .Include(t => t.UserTaggedPost)
+                .Include(t => t.Tags)
+                .Select(DtoLogic).ToList();
         }
 
+        public ICollection<Post> GetByFilters(Filter filtersList)
+        {
+            var posts = _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .ThenInclude(l => l.User)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .Include(t => t.UserTaggedPost)
+                .Include(t => t.Tags)
+                .Select(DtoLogic).ToList();
+            if(filtersList.Publishers.Count > 0)
+                posts = (List<Post>)PublishersUsersFilter(posts, filtersList.Publishers);
+            if(filtersList.Tags.Count > 0)
+                posts = (List<Post>)TagsFilter(posts, filtersList.Tags);
+            return posts;
+        }
+
+        private ICollection<Post> PublishersUsersFilter(ICollection<Post> pBeforeFilter, ICollection<User> publishers)
+        {
+            var posts = pBeforeFilter
+                .Where(p => IsPublisherExist(p.User.UserName, publishers))
+                .ToList();
+            return posts;
+        }
+
+        private ICollection<Post> TagsFilter(ICollection<Post> pBeforeFilter, ICollection<Tag> tags)
+        {
+            var posts = pBeforeFilter
+                .Where(p => IsTagExist(p.Tags, tags))
+                .ToList();
+            return posts;
+        }
+
+        private bool IsTagExist(ICollection<Tag> postTags, ICollection<Tag> filterTags)
+        {
+            foreach (var filterTag in filterTags)
+            {
+                foreach (var postTag in postTags)
+                {
+                    if (filterTag.Content == postTag.Content)
+                        return true;    
+                }
+            }
+            return false;
+        }
+        private bool IsPublisherExist(string userName, ICollection<User> publishers)
+        {
+            if( publishers.Where(u => u.UserName == userName).Count() != 0 )
+            {
+                return true;
+            }
+            return false;
+        }
         private Post DtoLogic(Post p)
         {
             var dtoPost = _converter.DtoPost(p);
