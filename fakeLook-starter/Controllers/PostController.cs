@@ -38,11 +38,11 @@ namespace fakeLook_starter.Controllers
 
         // GET: api/<PostsController>
         [HttpGet]
-        //[TypeFilter(typeof(GetUserActionFilter))]
+        [TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> Get()
         {
-            //Request.RouteValues.TryGetValue("user", out var obj);
-            //var user = obj as User;
+            Request.RouteValues.TryGetValue("user", out var obj);
+            var user = obj as User;
 
             return _repository.GetAll();
         }
@@ -57,7 +57,7 @@ namespace fakeLook_starter.Controllers
         // POST api/<PostsController>
         [HttpPost]
         [TypeFilter(typeof(GetUserActionFilter))]
-        //[Authorize]
+        [Authorize]
         public Post Post( Post value)
         {
             Request.RouteValues.TryGetValue("user", out var obj);

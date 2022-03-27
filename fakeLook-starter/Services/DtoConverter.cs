@@ -37,7 +37,8 @@ namespace fakeLook_starter.Services
 
         public UserTaggedPost DtoUserTaggedPost(UserTaggedPost userTaggedPost)
         {
-            return new UserTaggedPost() { User = DtoUser(userTaggedPost.User) };
+            //return new UserTaggedPost() { User = DtoUser(userTaggedPost.User) };
+            return new UserTaggedPost() { UserId = userTaggedPost.UserId };
         }
     }
 }

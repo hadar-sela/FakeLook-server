@@ -2,6 +2,7 @@
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,9 +35,9 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<CommentController>
         [HttpPost]
-        public void Post([FromBody] Comment value)
+        public async Task<Comment> Post([FromBody] Comment value)
         {
-            _ = _repository.Add(value);
+            return await _repository.Add(value);
         }
 
         // PUT api/<CommentController>/5

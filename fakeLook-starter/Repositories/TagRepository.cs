@@ -25,7 +25,7 @@ namespace fakeLook_starter.Repositories
             if (res == null)
             {
                 res = _context.Tags.Add(item).Entity;
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             return res;
             //var res = _context.Tags.Add(item);
